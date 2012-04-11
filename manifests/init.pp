@@ -13,12 +13,24 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 class postgres {
+  case $operatingsystem {
+      debian, ubuntu: {
+          $postgresql_server = "postgresql"
+          $postgresql_client = "postgresql-client"
+      }
+      redhat, fedora: {
+          $postgresql_server = "postgresql-server"
+          $postgresql_client = "postgresql"
+      }
+      default: {
+          err("postgres module doesn't know package names for '${operatingsystem}'.")
+      }
+  }
 
   package {
     [
-      postgresql,
-      ruby-postgres,
-      postgresql-server,
+      $postgresql_client,
+      $postgresql_server,
     ]:
       ensure => installed
   }
@@ -28,8 +40,8 @@ class postgres {
         enable    => true,
         hasstatus => true,
         subscribe => [
-          Package[postgresql-server],
-          Package[postgresql]
+          Package[$postgresql_server],
+          Package[$postgresql_server]
         ]
     }
 }
