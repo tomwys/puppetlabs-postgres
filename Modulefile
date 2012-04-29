@@ -1,0 +1,8 @@
+name 'puppet-postgres'
+version '0.0.1'
+source 'git://github.com/puppetlabs/puppet-postgres.git'
+author 'Puppet Labs'
+license 'Apache'
+summary 'PostgreSQL module'
+description 'PostgreSQL module'
+project_page 'http://github.com/puppetlabs/puppet-postgres'

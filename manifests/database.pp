@@ -1,9 +1,9 @@
 # Copyright (c) 2008, Luke Kanies, luke@madstop.com
-# 
+#
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
 # copyright notice and this permission notice appear in all copies.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 # WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
@@ -14,7 +14,7 @@
 
 define postgres::database($ensure, $owner = false) {
     $ownerstring = $owner ? {
-        false => "",
+        false   => '',
         default => "-O $owner"
     }
 
@@ -22,15 +22,15 @@ define postgres::database($ensure, $owner = false) {
         present: {
             exec { "Create $name postgres db":
                 command => "/usr/bin/createdb $ownerstring $name",
-                user => "postgres",
-                unless => "/usr/bin/psql -l | grep '$name  *|'"
+                user    => 'postgres',
+                unless  => "/usr/bin/psql -l | grep '$name  *|'"
             }
         }
         absent:  {
             exec { "Remove $name postgres db":
                 command => "/usr/bin/drop $name",
-                onlyif => "/usr/bin/psql -l | grep '$name  *|'",
-                user => "postgres"
+                onlyif  => "/usr/bin/psql -l | grep '$name  *|'",
+                user    => 'postgres'
             }
         }
         default: {
