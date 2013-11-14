@@ -28,11 +28,14 @@ class postgres {
   }
 
   package {
-    [
-      $postgresql_client,
-      $postgresql_server,
-    ]:
-      ensure => installed
+    'postgresql_server':
+    name => $postgresql_server,
+    ensure => installed,
+  }
+  package {
+    'postgresql_client':
+    name => $postgresql_client,
+    ensure => installed,
   }
 
     service { 'postgresql':
