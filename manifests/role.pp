@@ -12,7 +12,7 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-define postgres::role($ensure, $password = false) {
+define postgres::role($ensure, $password = false, $perms='') {
     $passtext = $password ? {
         false   => '',
         default => "PASSWORD '$password'"
@@ -21,7 +21,7 @@ define postgres::role($ensure, $password = false) {
         present: {
             # The createuser command always prompts for the password.
             exec { "Create $name postgres role":
-                command => "/usr/bin/psql -c \"CREATE USER \\\"$name\\\" $passtext\"",
+                command => "/usr/bin/psql -c \"CREATE USER \\\"$name\\\" $passtext $perms;\"",
                 user    => 'postgres',
                 unless  => "/usr/bin/psql -c '\\du' | grep '^  *$name  *|'",
                 require => [Service['postgresql'], Package['postgresql_client']],
